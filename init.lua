@@ -1,4 +1,5 @@
 --[[
+--
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -199,7 +200,8 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  comment
---  vim.keymap.set('n', '<leader>c', 'vgc', { desc = '[C]rite file' })
+-- vim.keymap.set('n', '<leader>c', 'vgc', { desc = '[C]omment line(s)' })
+-- vim.keymap.set('v', '<leader>c', 'gc', { desc = '[C]omment line(s)' })
 --  save
 vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = '[W]rite file' })
 --  See `:help wincmd` for a list of all window commands
@@ -221,6 +223,20 @@ vim.keymap.set('n', '<C-w>', '<cmd>tabclose<CR>', { desc = 'Close current tab' }
 vim.keymap.set('n', '<S-l>', '<cmd>tabn<CR>', { desc = 'Go to next tab' }) --  go to next tab
 vim.keymap.set('n', '<S-h>', '<cmd>tabp<CR>', { desc = 'Go to previous tab' }) --  go to previous tab
 vim.keymap.set('n', '<C-S-t>', '<cmd>tabnew %<CR>', { desc = 'Open current buffer in new tab' }) --  moves current buffer to new tab
+
+vim.keymap.set('v', '<S-j>', ":m '>+1<CR>gv=gv", { desc = 'Downshift selected code' }) --  downshift selected code block
+vim.keymap.set('v', '<S-k>', ":m '<-2<CR>gv=gv", { desc = 'Upshift selected code' }) --  downshift selected code block
+
+vim.keymap.set('n', '<S-j>', 'mz<S-j>`z', { desc = 'Upshift line below' }) --  upshift line below
+-- delete to void register & paste
+vim.keymap.set('x', '<leader>p', '"_dP', { desc = '[P]aste & Delete to void' }) --  upshift line below
+
+vim.keymap.set('n', '<leader>d', '"_d', { desc = '[D]elete to void' }) --  delete to void
+vim.keymap.set('v', '<leader>d', '"_d', { desc = '[D]elete to void' }) --  delete to void
+-- vim.keymap.set('n', '<leader>y', '"+y', { desc = '[Y]ank to system clipboard' }) --  yank to system clipboard
+-- vim.keymap.set('v', '<leader>y', '"+y', { desc = '[Y]ank to system clipboard' }) --  yank to system clipboard
+
+vim.keymap.set('n', '<S-q>', '<nop>') --  void shift-q functionality
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -384,7 +400,19 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          -- find_files = {
+          --   hidden = true,
+          --   find_command = {
+          --     'fg',
+          --     '--files',
+          --     '--glob',
+          --     '!{.git/*,.svelte-kit/*,target/*,node_modules/*}',
+          --     '--path-separator',
+          --     '/',
+          --   },
+          -- },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -603,12 +631,30 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        astro = {
+          root_dir = require('lspconfig').util.root_pattern('package.json', '.git', 'astro.config.*'),
+        },
+        biome = {
+          root_dir = require('lspconfig').util.root_pattern('package.json', '.git'),
+        },
+        cssls = {},
         -- clangd = {},
         gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         html = {},
+        tailwindcss = {
+          root_dir = require('lspconfig').util.root_pattern('package.json', '.git', 'tailwind.config.*'),
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
+                { 'cx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+              },
+            },
+          },
+        },
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -974,8 +1020,26 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'astro',
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'javascript',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'typescript',
+        'tsx',
+        'vim',
+        'vimdoc',
+        'yaml',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

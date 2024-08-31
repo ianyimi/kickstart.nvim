@@ -422,10 +422,13 @@ require('lazy').setup({
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
+      pcall(require('telescope').load_extension, 'chezmoi')
       pcall(require('telescope').load_extension, 'ui-select')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      vim.keymap.set('n', '<leader>fc', ':Telescope chezmoi find_files<CR>', { desc = '[F]ind [C]hezmoi Files' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
       vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
@@ -436,6 +439,11 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = '[F]ind [R]esume' })
       vim.keymap.set('n', '<leader>f.', builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      vim.keymap.set('n', '<leader>cl', ':ChezmoiList<CR>', { desc = '[C]hezmoi List' })
+      -- vim.keymap.set('n', '<leader>cs', ':Chezmoi status<CR>', { desc = '[C]hezmoi Status' })
+      -- vim.keymap.set('n', '<leader>ca', ':Telescope chezmoi apply<CR>', { desc = '[C]hezmoi Apply' })
+      -- vim.keymap.set('n', '<leader>ce', ':Telescope chezmoi edit<CR>', { desc = '[C]hezmoi Edit' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -660,7 +668,34 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {
+          root_dir = require('lspconfig').util.root_pattern '.git',
+          single_file_support = false,
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'literal',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'literal',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+        },
         --
 
         lua_ls = {
@@ -710,11 +745,11 @@ require('lazy').setup({
     end,
   },
 
-  { -- Typescript LSP
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-  },
+  -- { -- Typescript LSP
+  --   'pmizio/typescript-tools.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  --   opts = {},
+  -- },
 
   { -- Comments
     'folke/ts-comments.nvim',
@@ -831,6 +866,7 @@ require('lazy').setup({
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
+          ['<Tab>'] = cmp.mapping.confirm { select = true },
           ['<CR>'] = cmp.mapping.confirm { select = true },
           --['<Tab>'] = cmp.mapping.select_next_item(),
           --['<S-Tab>'] = cmp.mapping.select_prev_item(),
@@ -974,6 +1010,13 @@ require('lazy').setup({
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'xvzc/chezmoi.nvim',
+    dependencies = { 'nvim.lua/plenary.nvim' },
+    config = function()
+      require('chezmoi').setup {}
     end,
   },
 

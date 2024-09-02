@@ -22,6 +22,7 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 --  save
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "[W]rite file" })
+vim.keymap.set("v", "<leader>w", "<cmd>w<CR>", { desc = "[W]rite file" })
 
 --  pane navigation
 vim.keymap.set("n", "<leader>h", "<C-w><C-h>", { desc = "Move focus to the left pane" })

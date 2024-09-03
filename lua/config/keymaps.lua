@@ -11,6 +11,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- Toggle Undo Tree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
+--  comment
+-- vim.keymap.set("n", "<leader>c", "gcc", { desc = "[C]omment line" })
+-- vim.keymap.set("i", "<leader>c", "gc", { desc = "[C]omment lines" })
+
 --  save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
 vim.keymap.set("v", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })

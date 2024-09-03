@@ -6,6 +6,7 @@ return { -- Highlight, edit, and navigate code
     ensure_installed = {
       "astro",
       "bash",
+      "css",
       "diff",
       "html",
       "json",
@@ -36,6 +37,7 @@ return { -- Highlight, edit, and navigate code
   config = function(_, opts)
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
+    -- require function necessary to work with treesitter-astro plugin
     ---@diagnostic disable-next-line: missing-fields
     require("nvim-treesitter.configs").setup(opts)
 

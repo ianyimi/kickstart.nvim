@@ -15,6 +15,9 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 -- vim.keymap.set("n", "<leader>c", "gcc", { desc = "[C]omment line" })
 -- vim.keymap.set("i", "<leader>c", "gc", { desc = "[C]omment lines" })
 
+--  upshift line below
+vim.keymap.set("n", "<S-j>", "mz<S-j>`z", { desc = "Upshift line below" })
+
 --  save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
 vim.keymap.set("v", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })

@@ -91,6 +91,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
     vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
     vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+    -- vim.keymap.set("i", "<esc>", require("telescope.actions").close, { desc = "Close finder window" })
 
     vim.keymap.set("n", "<leader>cl", ":ChezmoiList<CR>", { desc = "[C]hezmoi List" })
     -- vim.keymap.set('n', '<leader>cs', ':Chezmoi status<CR>', { desc = '[C]hezmoi Status' })

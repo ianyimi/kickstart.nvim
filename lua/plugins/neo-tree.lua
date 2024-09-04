@@ -34,6 +34,19 @@ return {
     "MunifTanjim/nui.nvim",
     -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
   },
+  keys = {
+    {
+      "<Space>e",
+      function()
+        require("neo-tree.command").execute({
+          toggle = true,
+          source = "filesystem",
+          position = "right",
+        })
+      end,
+      desc = "Filesystem (root dir)",
+    },
+  },
   opts = {
     commands = {
       telescope_find = function(state)
@@ -69,7 +82,7 @@ return {
       },
     },
     window = {
-      position = "current",
+      position = "right",
       mappings = {
         ["o"] = "open",
         ["x"] = "close_node",
@@ -78,6 +91,10 @@ return {
         ["C"] = "set_root",
         ["r"] = "refresh",
         ["c"] = "setcd",
+        ["s"] = "open_split",
+        ["v"] = "open_vsplit",
+        ["m"] = function() end,
+        ["z"] = function() end,
         ["<CTRL-a>"] = {
           "add",
           config = {
@@ -99,25 +116,26 @@ return {
             show_path = "relative",
           },
         },
-        ["<CTRL-s>"] = "open_split",
-        ["<CTRL-v>"] = "open_vsplit",
-        ["m"] = function() end,
-        ["z"] = function() end,
       },
     },
     filesystem = {
       filtered_items = {
-        visible = true,
+        -- visible = true,
         show_hidden_count = true,
-        hide_dotfiles = false,
-        hide_gitignored = true,
+        hide_dotfiles = true,
+        hide_gitignored = false,
         hide_by_name = {
-          -- '.git',
+          -- ".git",
           ".DS_Store",
           -- 'thumbs.db',
         },
         never_show = {},
       },
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = false,
+      },
     },
+    use_libuv_file_watcher = false,
   },
 }

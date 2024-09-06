@@ -17,8 +17,9 @@ return {
         all = function(colors)
           vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = "NONE" })
           return {
-            CurSearch = { bg = colors.lavender },
-            IncSearch = { bg = colors.sapphire },
+            Search = { fg = colors.sky, bg = colors.crust },
+            CurSearch = { fg = colors.sky, bg = colors.crust },
+            IncSearch = { fg = colors.sky, bg = colors.crust },
             CursorLineNr = { fg = colors.blue, style = { "bold" } },
             DashboardFooter = { fg = colors.sky },
             TreesitterContextBottom = { style = {} },

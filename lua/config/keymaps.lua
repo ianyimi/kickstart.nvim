@@ -18,6 +18,9 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 --  upshift line below
 vim.keymap.set("n", "<S-j>", "mz<S-j>`z", { desc = "Upshift line below" })
 
+--  exit file and neotree in tandem
+vim.keymap.set("n", "<S-z><S-z>", "<S-z><S-z><S-z><S-z>", { desc = "Quit [x2]" })
+
 --  save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
 vim.keymap.set("v", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
@@ -40,3 +43,16 @@ vim.keymap.set("n", "<C-w>", "<cmd>tabclose<CR>", { desc = "Close current tab" }
 
 -- buffer
 vim.keymap.set("n", "<S-x>", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
+
+vim.keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { desc = "Downshift selected code" }) --  downshift selected code block
+vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { desc = "Upshift selected code" }) --  downshift selected code block
+
+-- delete to void register & paste
+vim.keymap.set("x", "<leader>p", '"_dP', { desc = "[P]aste & Delete to void" }) --  upshift line below
+
+-- vim.keymap.set('n', '<leader>d', '"_d', { desc = '[D]elete to void' }) --  delete to void
+-- vim.keymap.set('v', '<leader>d', '"_d', { desc = '[D]elete to void' }) --  delete to void
+vim.keymap.set("n", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" }) --  yank to system clipboard
+vim.keymap.set("v", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" }) --  yank to system clipboard
+
+vim.keymap.set("n", "<S-q>", "<nop>") --  void shift-q functionality

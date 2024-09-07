@@ -1,25 +1,17 @@
-return {
-  {
-    "LazyVim/LazyVim",
-    opts = function()
-      return {
-        colorscheme = "catppuccin-macchiato",
-      }
-    end,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    opts = {
+---@type Huez.ThemeConfig
+local M = {
+  styles = { "macchiato" },
+  set_theme = function(theme)
+    ---@type catppuccin.Config
+
+    local config = {
       transparent_background = true,
       highlight_overrides = {
         all = function(colors)
           vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = "NONE" })
           return {
-            Search = { fg = colors.sky, bg = colors.crust },
-            CurSearch = { fg = colors.sky, bg = colors.crust },
-            IncSearch = { fg = colors.sky, bg = colors.crust },
+            CurSearch = { bg = colors.lavender },
+            IncSearch = { bg = colors.sapphire },
             CursorLineNr = { fg = colors.blue, style = { "bold" } },
             DashboardFooter = { fg = colors.sky },
             TreesitterContextBottom = { style = {} },
@@ -78,6 +70,10 @@ return {
           style = "nvchad",
         },
       },
-    },
-  },
+    }
+
+    require("catppuccin").setup(config)
+    vim.cmd("colorscheme " .. theme)
+    return true
+  end,
 }

@@ -13,6 +13,15 @@ return { -- Autoformat
     },
   },
   opts = {
+    formatters = {
+      prettier = function()
+        return {
+          ext_parsers = {
+            astro = "mdx",
+          },
+        }
+      end,
+    },
     notify_on_error = false,
     formatters_by_ft = {
       lua = { "stylua" },
@@ -21,8 +30,8 @@ return { -- Autoformat
       -- python = { "isort", "black" },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
-      javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
-      typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
+      javascript = { "prettierd", "biome", "prettier", stop_after_first = true },
+      typescript = { "prettierd", "biome", "prettier", stop_after_first = true },
     },
   },
 }

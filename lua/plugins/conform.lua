@@ -24,6 +24,7 @@ return { -- Autoformat
     },
     notify_on_error = false,
     formatters_by_ft = {
+      astro = { "astro" },
       lua = { "stylua" },
       go = { "goimports", "gofmt" },
       -- Conform can also run multiple formatters sequentially

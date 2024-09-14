@@ -15,6 +15,9 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 -- vim.keymap.set("n", "<leader>c", "gcc", { desc = "[C]omment line" })
 -- vim.keymap.set("i", "<leader>c", "gc", { desc = "[C]omment lines" })
 
+-- select all
+vim.keymap.set("n", "<C-y>", "gg<S-v><S-g>y", { desc = "Select All" })
+
 --  upshift line below
 vim.keymap.set("n", "<S-j>", "mz<S-j>`z", { desc = "Upshift line below" })
 

@@ -66,11 +66,5 @@ keymap.set("v", "<leader>y", '"+y', { desc = "[y]ank to system clipboard" }) -- 
 keymap.set("n", "<S-q>", "<nop>") --  void shift-q functionality
 
 keymap.set("n", "<leader>e", function()
-  OilOpen = not OilOpen
-  local oil = require("oil")
-  if OilOpen then
-    oil.open()
-  else
-    oil.close()
-  end
+  require("oil").open()
 end, { desc = "[E]xplore Files" })

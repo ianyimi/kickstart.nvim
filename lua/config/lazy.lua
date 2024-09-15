@@ -35,6 +35,7 @@ require("lazy").setup({
 
     { import = "lazyvim.plugins.extras.util.chezmoi" },
     -- import/override with your plugins
+    { import = "plugins.lsp" },
     { import = "plugins.editor" },
     { import = "plugins.ui" },
     { import = "plugins.util" },

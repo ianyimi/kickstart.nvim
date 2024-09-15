@@ -24,7 +24,7 @@ return {
           pattern = "^/",
           icon = " ",
           lang = "regex",
-          view = "cmdline", -- Use the default cmdline at the bottom
+          view = "cmdline_popup", -- Use the default cmdline at the bottom
         },
         -- Use default cmdline for '?' (search_up)
         search_up = {
@@ -32,7 +32,7 @@ return {
           pattern = "^%?",
           icon = " ",
           lang = "regex",
-          view = "cmdline", -- Use the default cmdline at the bottom
+          view = "cmdline_popup", -- Use the default cmdline at the bottom
         },
         -- Add any other overrides if necessary
       },
@@ -56,6 +56,35 @@ return {
           winhighlight = "NormalFloat:NoiceCmdlinePopup,FloatBorder:NoiceCmdlinePopupBorder",
         },
       },
+      cmdline_popup_search = {
+        position = {
+          row = "10%",
+          col = "50%",
+        },
+        size = {
+          width = "auto",
+          height = "auto",
+        },
+        border = {
+          style = "rounded",
+          padding = { 0, 1 },
+        },
+        -- Use custom highlight groups
+        win_options = {
+          winhighlight = "Normal:NoiceCmdlinePopupSearchNormal,FloatBorder:NoiceCmdlinePopupSearchBorder",
+        },
+      },
     }
+
+    opts.highlights = vim.tbl_extend("force", opts.highlights or {}, {
+      -- Adjust highlights for the default cmdline (used for search)
+      Cmdline = { fg = "#FFFFFF", bg = "#000000" },
+      CmdlinePrompt = { fg = "#FFFF00", bg = "#000000" },
+      -- For '/' and '?' search popup
+      NoiceCmdlinePopupSearchNormal = { fg = "#FFFFFF", bg = "#000000" },
+      NoiceCmdlinePopupSearchBorder = { fg = "#FFFFFF", bg = "#000000" },
+      -- If using MsgArea
+      MsgArea = { fg = "#FFFFFF", bg = "#000000" },
+    })
   end,
 }

@@ -66,6 +66,7 @@ return {
     config = function()
       require("oil").setup({
         default_file_explorer = true,
+        columns = { "icon", "mtime", "size" },
         delete_to_trash = true,
         skip_confirm_for_simple_edits = true,
         watch_for_changes = true,
@@ -111,14 +112,14 @@ return {
           ["<C-v>"] = { "actions.select", opts = { vertical = true }, desc = "Open the entry in a vertical split" },
           ["<C-r>"] = "actions.refresh",
           ["<C-s>"] = "actions.change_sort",
-          ["<C-h>"] = "actions.toggle_trash",
+          ["<C-h>"] = "actions.toggle_hidden",
           ["<C-x>"] = "actions.toggle_trash",
           ["<C-d>"] = {
             desc = "Toggle file detail view",
             callback = function()
               detail = not detail
               if detail then
-                require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+                require("oil").set_columns({ "icon", "size", "mtime" })
               else
                 require("oil").set_columns({ "icon" })
               end

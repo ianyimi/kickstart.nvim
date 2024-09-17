@@ -98,6 +98,7 @@ return {
           max_height = 0,
         },
         win_options = {
+          cursorcolumn = true,
           wrap = true,
           winblend = 0,
           winbar = "%!v:lua.get_oil_winbar()",

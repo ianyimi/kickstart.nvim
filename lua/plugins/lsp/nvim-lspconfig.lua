@@ -135,6 +135,7 @@ return {
     local servers = {
       astro = {
         root_dir = lspconfig.util.root_pattern("package.json", ".git", "astro.config.*"),
+        capabilities = capabilities,
       },
       biome = {
         root_dir = lspconfig.util.root_pattern("package.json", ".git"),
@@ -155,7 +156,7 @@ return {
           },
         },
       },
-      tsserver = {
+      ts_ls = {
         root_dir = lspconfig.util.root_pattern(".git"),
         single_file_support = false,
         settings = {

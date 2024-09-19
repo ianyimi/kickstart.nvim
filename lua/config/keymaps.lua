@@ -65,6 +65,13 @@ keymap.set("v", "<leader>y", '"+y', { desc = "[y]ank to system clipboard" }) -- 
 
 keymap.set("n", "<S-q>", "<nop>") --  void shift-q functionality
 
+keymap.set("n", "<leader>lg", function()
+  LazyVim.lazygit({ cwd = LazyVim.root.git() })
+end, { desc = "Lazygit (Root Dir)" })
+keymap.set("n", "<leader>lG", function()
+  LazyVim.lazygit()
+end, { desc = "Lazygit (cwd)" })
+
 keymap.set("n", "<leader>e", function()
   require("oil").open()
 end, { desc = "[E]xplore Files" })

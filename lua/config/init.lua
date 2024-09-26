@@ -1,5 +1,3 @@
-_G.LazyVim = require("util")
-
 ---@class LazyVimConfig: LazyVimOptions
 local M = {}
 

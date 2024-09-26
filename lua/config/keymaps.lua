@@ -58,10 +58,12 @@ keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { desc = "Upshift selected code" })
 -- delete to void register & paste
 keymap.set("x", "<leader>p", '"_dP', { desc = "[P]aste & Delete to void" }) --  upshift line below
 
-keymap.set("n", "<leader>d", '"_d', { desc = "[d]elete to void" }) --  delete to voidt
-keymap.set("v", "<leader>d", '"_d', { desc = "[d]elete to void" }) --  delete to void
-keymap.set("n", "<leader>y", '"+y', { desc = "[y]ank to system clipboard" }) --  yank to system clipboard
-keymap.set("v", "<leader>y", '"+y', { desc = "[y]ank to system clipboard" }) --  yank to system clipboard
+keymap.set("n", "<leader>d", '"_d', { desc = "[D]elete to void" }) --  delete to voidt
+keymap.set("v", "<leader>d", '"_d', { desc = "[D]elete to void" }) --  delete to void
+keymap.set("n", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" }) --  yank to system clipboard
+keymap.set("v", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" }) --  yank to system clipboard
+keymap.set("n", "<leader>p", '"+p', { desc = "[P]aste from system clipboard" }) --  paste from system clipboard
+keymap.set("v", "<leader>p", '"+p', { desc = "[P]aste from system clipboard" }) --  paste from system clipboard
 
 keymap.set("n", "<S-q>", "<nop>") --  void shift-q functionality
 

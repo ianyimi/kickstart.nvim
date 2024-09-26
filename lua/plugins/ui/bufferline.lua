@@ -1,6 +1,6 @@
 return {
   "akinsho/bufferline.nvim",
-  event = "BufWinEnter",
+  event = "VeryLazy",
   keys = {
     { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
     { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
@@ -24,7 +24,7 @@ return {
       always_show_bufferline = true,
       diagnostics_indicator = function(_, _, diag)
         local icons = LazyVim.config.icons.diagnostics
-        local ret = (diag.error and icons.Error .. diag.error .. "BufWinEnter" or "")
+        local ret = (diag.error and icons.Error .. diag.error .. " " or "")
           .. (diag.warning and icons.Warn .. diag.warning or "")
         return vim.trim(ret)
       end,

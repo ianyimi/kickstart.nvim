@@ -2,11 +2,18 @@ return {
   "rcarriga/nvim-notify",
   keys = {
     {
-      "<leader>xm",
+      "<leader>nx",
       function()
         require("notify").dismiss({ silent = true, pending = true })
       end,
       desc = "Dismiss All Notifications",
+    },
+    {
+      "<leader>nh",
+      function()
+        require("notify").history()
+      end,
+      desc = "Display Notification History",
     },
   },
   opts = {

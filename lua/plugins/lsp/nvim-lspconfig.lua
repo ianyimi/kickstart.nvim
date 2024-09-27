@@ -10,6 +10,9 @@ return {
 
     -- Allows extra capabilities provided by nvim-cmp
     "hrsh7th/cmp-nvim-lsp",
+
+    -- astro lsp plugin
+    'wuelnerdotexe/vim-astro',
   },
   opts = function()
     local lspconfig = require("lspconfig")

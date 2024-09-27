@@ -4,17 +4,6 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
 end
 
--- augroup('formatonsave', { clear = true })
--- format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = augroup("formatonsave"),
-  desc = "Trigger format on save",
-  pattern = { "*.yaml", "*.toml", "*.json", "*.astro", "*.lua", "*.py", "*.js", "*.ts", "*.jsx", "*.tsx", "*.sh", "*.md" },
-  callback = function()
-    vim.lsp.buf.format()
-  end,
-})
-
 -- stop telescope from going into insert mode on close
 vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
   callback = function(event)

@@ -86,8 +86,8 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.incsearch = false
-vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -110,7 +110,7 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
--- Show which line your cursor is on
+-- Show line/column for cursor location
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 

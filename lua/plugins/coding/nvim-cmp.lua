@@ -10,6 +10,9 @@ return {
     },
   },
   opts = function(_, opts)
+    opts.formatting = {
+      format = require("tailwindcss-colorizer-cmp").formatter
+    } 
     opts.snippet = {
       expand = function(item)
         return LazyVim.cmp.expand(item.body)

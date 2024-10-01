@@ -24,8 +24,8 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.incsearch = false
-vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
 
 -- Decrease update time
 vim.opt.updatetime = 250

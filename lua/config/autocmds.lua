@@ -9,6 +9,22 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("sergio-lazyvim_" .. name, { clear = true })
 end
 
+-- cd into directory given in cli params
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    for _, arg in ipairs(vim.v.argv) do
+      -- Check if the argument is a directory
+      local stat = vim.loop.fs_stat(arg)
+      if stat and stat.type == "directory" then
+        -- Change the current working directory to the first directory argument
+        vim.cmd("cd " .. arg)
+        vim.notify("updated directory")
+        return
+      end
+    end
+  end,
+})
+
 -- augroup('formatonsave', { clear = true })
 autocmd("BufWritePre", {
   group = augroup("formatonsave"),

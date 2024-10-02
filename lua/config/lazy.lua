@@ -14,6 +14,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+_G.LazyVim = require("util")
 
 require("config.options")
 require("config.keymaps")
@@ -23,6 +24,7 @@ require("lazy").setup({
   spec = {
     -- import your plugins
     { import = "plugins.editor" },
+    { import = "plugins.ui" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.

@@ -9,7 +9,3 @@ keymap.set("v", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
 --  comment
 keymap.set("n", "<leader>.", "<cmd>normal gcc<CR>", { noremap = true, desc = "[C]omment line" })
 keymap.set("v", "<leader>.", "<cmd>normal gcc<CR>", { noremap = true, desc = "[C]omment lines" })
--- open oil.nvim file explorer
-keymap.set("n", "<leader>e", function()
-  require("oil").open()
-end, { desc = "[E]xplore Files" })

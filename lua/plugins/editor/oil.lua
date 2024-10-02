@@ -127,6 +127,10 @@ return {
           },
         },
       })
+			-- open oil at current buffer
+			vim.keymap.set("n", "<leader>e", function()
+				require("oil").open()
+			end, { desc = "[E]xplore Files" })
     end,
   },
 }

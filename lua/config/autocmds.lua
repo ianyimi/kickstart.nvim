@@ -4,6 +4,32 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
 end
 
+-- cd into directory specified via cli parameters
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    for _, arg in ipairs(vim.v.argv) do
+      -- Check if the argument is a directory
+      local stat = vim.loop.fs_stat(arg)
+      if stat and stat.type == "directory" then
+        -- Change the current working directory to the first directory argument
+        vim.cmd("cd " .. arg)
+        return
+      end
+    end
+  end
+})
+
+-- stop telescope from going into insert mode on close
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  callback = function(event)
+    print(vim.v.argv)
+    if vim.bo[event.buf].filetype == "TelescopePrompt" then
+      vim.api.nvim_exec2("silent! stopinsert!", {})
+    end
+  end,
+})
+
+
 -- stop telescope from going into insert mode on close
 vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
   callback = function(event)

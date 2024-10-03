@@ -48,6 +48,7 @@ keymap.set("x", "<leader>p", '"_dP', { desc = "[P]aste & Delete to void" })
 
 keymap.set("n", "<leader>d", '"_d', { desc = "[D]elete to void" })
 keymap.set("v", "<leader>d", '"_d', { desc = "[D]elete to void" })
+keymap.set("n", "<leader>D", '"_D', { desc = "[D]elete to void" })
 -- keymap.set("n", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" })
 -- keymap.set("v", "<leader>y", '"+y', { desc = "[Y]ank to system clipboard" })
 -- keymap.set("n", "<leader>p", '"+p', { desc = "[P]aste from system clipboard" })

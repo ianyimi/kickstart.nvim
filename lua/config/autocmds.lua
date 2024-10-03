@@ -119,3 +119,25 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     end)
   end,
 })
+
+-- -- Autocommand to enable paste mode when exiting visual block mode
+-- vim.api.nvim_create_autocmd("VisualLeave", {
+--   group = augroup("PasteInVisualBlock"),
+--   pattern = "*",
+--   callback = function()
+--     -- Enable 'paste' mode if exiting visual block mode
+--     if vim.fn.mode() == "\22" then  -- "\22" is the code for visual block mode
+--       vim.opt.paste = true
+--     end
+--   end,
+-- })
+--
+-- -- Autocommand to disable paste mode when entering insert mode
+-- vim.api.nvim_create_autocmd("InsertEnter", {
+--   group = augroup("PasteInVisualBlock"),
+--   pattern = "*",
+--   callback = function()
+--     -- Disable 'paste' mode when entering insert mode
+--     vim.opt.paste = false
+--   end,
+-- })

@@ -39,12 +39,15 @@ keymap.set("n", "<alt-l>", "<cmd>tabprev", { desc = "Split window below" })
 
 -- buffer controls
 keymap.set("n", "<S-x>", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
+-- buffer navigation
+keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" }) --  downshift selected code block
+keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" }) --  downshift selected code block
 
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { desc = "Downshift selected code" })
 keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { desc = "Upshift selected code" })
 
 -- delete to void register & paste
-keymap.set("x", "<leader>p", '"_dP', { desc = "[P]aste & Delete to void" })
+keymap.set("x", "<C-p>", '"_dP', { desc = "[P]aste & Delete to void" })
 
 keymap.set("n", "<leader>d", '"_d', { desc = "[D]elete to void" })
 keymap.set("v", "<leader>d", '"_d', { desc = "[D]elete to void" })

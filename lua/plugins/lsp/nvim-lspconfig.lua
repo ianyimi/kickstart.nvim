@@ -34,6 +34,9 @@ return {
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
+					-- reveal code diagnostic
+					map("<leader>cd", vim.diagnostic.open_float, "[S]how [D]iagnostic")
+
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')

@@ -34,8 +34,8 @@ keymap.set("n", "<leader>k", "<C-w><C-k>", { desc = "Move focus to the upper pan
 keymap.set("n", "<a-t>", "<cmd>tabnew<CR>", { desc = "Open new tab" })
 keymap.set("n", "<a-x>", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 -- tab navigation
-keymap.set("n", "<alt-h>", "<cmd>tabnext", { desc = "Split window right" })
-keymap.set("n", "<alt-l>", "<cmd>tabprev", { desc = "Split window below" })
+keymap.set("n", "<a-h>", "<cmd>tabnext", { desc = "Split window right" })
+keymap.set("n", "<a-l>", "<cmd>tabprev", { desc = "Split window below" })
 
 -- buffer controls
 keymap.set("n", "<S-x>", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
@@ -55,3 +55,5 @@ keymap.set("v", "<leader>d", '"_d', { desc = "[D]elete to void" })
 
 -- void shift-q
 keymap.set("n", "<S-q>", "<nop>") 
+
+keymap.set("n", "<a-C-h>", ":h <Space>", { desc = "[H]elp" })

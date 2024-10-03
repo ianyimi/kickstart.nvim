@@ -23,6 +23,7 @@ require("config.keymaps")
 require("lazy").setup({
   spec = {
     -- import your plugins
+    { import = "plugins.lsp" },
     { import = "plugins.editor" },
     { import = "plugins.coding" },
     { import = "plugins.ui" },

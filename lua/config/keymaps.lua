@@ -55,6 +55,34 @@ keymap.set("n", "<leader>D", '"_D', { desc = "[D]elete to void" })
 -- keymap.set("v", "<leader>p", '"+p', { desc = "[P]aste from system clipboard" })
 
 -- void shift-q
-keymap.set("n", "<S-q>", "<nop>") 
+keymap.set("n", "<S-q>", "<nop>")
 
 keymap.set("n", "<a-C-h>", ":h <Space>", { desc = "[H]elp" })
+
+-- Lua keybind to copy the file path of the current buffer to the clipboard with home directory replaced by ~
+vim.keymap.set("n", "<leader>cp", function()
+	-- Get the current file's absolute path
+	local filepath = vim.fn.expand("%:p")
+
+	-- Get the user's home directory
+	local home = vim.env.HOME or vim.fn.expand("~")
+
+	-- Function to escape special characters
+	local function escape_special_chars(str)
+		-- Escape Lua pattern special characters
+		local special_chars = { "(", ")", "[", "]", "%%", ".", "+", "-", "*", "?", "^", "$", "/" }
+		for _, char in ipairs(special_chars) do
+			str = str:gsub("%" .. char, "\\" .. char)
+		end
+		return str
+	end
+
+	-- Escape special characters in the path
+	local escaped_display_path = escape_special_chars(home)
+
+	-- Copy the escaped path to clipboard
+	vim.fn.setreg("+", escaped_display_path)
+
+	-- Optionally, show a message to confirm
+	vim.notify("File path copied: " .. escaped_display_path)
+end, { desc = "Copy current file path to clipboard" })

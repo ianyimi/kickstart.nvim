@@ -25,6 +25,7 @@ require("lazy").setup({
     -- import your plugins
     { import = "plugins.lsp" },
     { import = "plugins.editor" },
+    { import = "plugins.formatting" },
     { import = "plugins.coding" },
     { import = "plugins.ui" },
   },

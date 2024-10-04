@@ -1,17 +1,18 @@
 return {
 	"hrsh7th/nvim-cmp",
 	dependencies = {
-	  'hrsh7th/cmp-nvim-lsp',
-	  'hrsh7th/cmp-buffer',
-	  'hrsh7th/cmp-path',
-	  'hrsh7th/cmp-cmdline',
-	  'saadparwaiz1/cmp_luasnip',
-	  'L3MON4D3/LuaSnip'
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-cmdline",
+		"hrsh7th/cmp-emoji",
+		"saadparwaiz1/cmp_luasnip",
+		"L3MON4D3/LuaSnip",
 	},
 	config = function()
 		-- Set up nvim-cmp.
-		local luasnip = require('luasnip')
-		local cmp = require('cmp')
+		local luasnip = require("luasnip")
+		local cmp = require("cmp")
 
 		cmp.setup({
 			snippet = {
@@ -29,7 +30,7 @@ return {
 				-- documentation = cmp.config.window.bordered(),
 			},
 			mapping = cmp.mapping.preset.insert({
-				['<CR>'] = cmp.mapping(function(fallback)
+				["<CR>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						if luasnip.expandable() then
 							luasnip.expand()
@@ -62,18 +63,19 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-				['<C-e>'] = cmp.mapping.abort(),
-				['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+				["<C-e>"] = cmp.mapping.abort(),
+				["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 			}),
 			sources = cmp.config.sources({
-				{ name = 'nvim_lsp' },
-				{ name = 'nvim_lsp_signature_help' },
+				{ name = "emoji" },
+				{ name = "nvim_lsp" },
+				{ name = "nvim_lsp_signature_help" },
 				-- { name = 'luasnip' }, -- For luasnip users.
 				-- { name = 'ultisnips' }, -- For ultisnips users.
 				-- { name = 'snippy' }, -- For snippy users.
 			}, {
-				{ name = 'buffer' },
-			})
+				{ name = "buffer" },
+			}),
 		})
 
 		-- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
@@ -85,43 +87,44 @@ return {
 				{ name = 'buffer' },
 			})
 	 })
-	 require("cmp_git").setup() ]]-- 
+	 require("cmp_git").setup() ]]
+		--
 
 		-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-		cmp.setup.cmdline({ '/', '?' }, {
+		cmp.setup.cmdline({ "/", "?" }, {
 			mapping = {
-				['<Tab>'] = cmp.mapping.confirm({ select = true }),
-				['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
-				['<Down>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' })
+				["<Tab>"] = cmp.mapping.confirm({ select = true }),
+				["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+				["<Down>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 			},
 			sources = {
-				{ name = 'buffer' }
-			}
+				{ name = "buffer" },
+			},
 		})
 
 		-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-		cmp.setup.cmdline(':', {
+		cmp.setup.cmdline(":", {
 			mapping = {
-				['<Tab>'] = cmp.mapping.confirm({ select = true }),
-				['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
-				['<Down>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' })
+				["<Tab>"] = cmp.mapping.confirm({ select = true }),
+				["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+				["<Down>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 			},
 			sources = cmp.config.sources({
-				{ name = 'path' }
+				{ name = "path" },
 			}, {
-				{ name = 'cmdline' },
+				{ name = "cmdline" },
 				-- option = {
 				-- 	ignore_cmds = { '!' }
 				-- }
 			}),
-			matching = { disallow_symbol_nonprefix_matching = false }
+			matching = { disallow_symbol_nonprefix_matching = false },
 		})
 
 		-- Set up lspconfig.
-		local capabilities = require('cmp_nvim_lsp').default_capabilities()
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 		-- Replace <Down> with each lsp server you've enabled.
-		require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-			capabilities = capabilities
-		}
-	end
+		require("lspconfig")["<YOUR_LSP_SERVER>"].setup({
+			capabilities = capabilities,
+		})
+	end,
 }

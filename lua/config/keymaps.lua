@@ -39,6 +39,9 @@ keymap.set("n", "<a-l>", "<cmd>tabprev", { desc = "Split window below" })
 
 -- buffer controls
 keymap.set("n", "<S-x>", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
+-- buffer navigation
+keymap.set("n", "<S-l>", "<cmd>BufferNext<CR>", { noremap = true, silent = true, desc = "Next Buffer" })
+keymap.set("n", "<S-h>", "<cmd>BufferPrev<CR>", { noremap = true, silent = true, desc = "Previous Buffer" })
 
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { desc = "Downshift selected code" })
 keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { desc = "Upshift selected code" })

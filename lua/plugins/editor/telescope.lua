@@ -21,7 +21,7 @@ return {
 
 		-- Useful for getting pretty icons, but requires a Nerd Font.
 		{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
-		{ "ThePrimeagen/git-worktree.nvim" },
+		{ "xvzc/chezmoi.nvim" },
 		{
 			"stevearc/dressing.nvim",
 			lazy = true,
@@ -133,6 +133,7 @@ return {
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "git-worktree")
+		pcall(require("telescope").load_extension, "chezmoi")
 
 		-- Keymaps for Telescope functions
 		local builtin = require("telescope.builtin")
@@ -186,6 +187,8 @@ return {
 		vim.keymap.set("n", "<leader>f.", project_oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 		-- vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+		-- Search Chezmoi configuration files
+		vim.keymap.set("n", "<leader>fc", extensions.chezmoi.find_files, { desc = "[F]ind [C]hezmoi" })
 		-- Advanced example: Search within the current buffer
 		vim.keymap.set("n", "<leader>fb", function()
 			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -201,10 +204,5 @@ return {
 				prompt_title = "Live Grep in Open Files",
 			})
 		end, { desc = "[F]ind in [O]pen Files" })
-
-		-- Search Neovim configuration files
-		vim.keymap.set("n", "<leader>fc", function()
-			builtin.find_files({ cwd = vim.fn.stdpath("config") })
-		end, { desc = "[F]ind neovim [C]onfiguration files" })
 	end,
 }

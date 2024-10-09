@@ -9,7 +9,7 @@ return {
 
 		barbar.setup({
 			hide = {
-				inactive = true,
+				inactive = false,
 			},
 			icons = {
 				pinned = { filename = true, buffer_index = true },

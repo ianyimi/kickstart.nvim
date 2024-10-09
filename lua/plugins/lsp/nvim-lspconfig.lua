@@ -16,6 +16,42 @@ return {
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 		},
+		setup = {
+			eslint = function()
+				local function get_client(buf)
+					return LazyVim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
+				end
+
+				local formatter = LazyVim.lsp.formatter({
+					name = "eslint: lsp",
+					primary = false,
+					priority = 200,
+					filter = "eslint",
+				})
+
+				-- Use EslintFixAll on Neovim < 0.10.0
+				if not pcall(require, "vim.lsp._dynamic") then
+					formatter.name = "eslint: EslintFixAll"
+					formatter.sources = function(buf)
+						local client = get_client(buf)
+						return client and { "eslint" } or {}
+					end
+					formatter.format = function(buf)
+						local client = get_client(buf)
+						if client then
+							local diag =
+								vim.diagnostic.get(buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+							if #diag > 0 then
+								vim.cmd("EslintFixAll")
+							end
+						end
+					end
+				end
+
+				-- register the formatter with LazyVim
+				LazyVim.format.register(formatter)
+			end,
+		},
 		config = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -27,7 +63,6 @@ return {
 					-- Preview lsp hover for item under cursor
 					map("gh", vim.lsp.buf.hover, "Preview Hover")
 					-- Jump to the definition of the word under your cursor.
-					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
@@ -168,6 +203,11 @@ return {
 				-- },
 				cssls = {},
 				clangd = {},
+				eslint = {
+					settings = {
+						workingDirectories = { mode = "auto" },
+					},
+				},
 				gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
@@ -190,6 +230,7 @@ return {
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				ts_ls = {
+					enabled = false,
 					root_dir = require("lspconfig").util.root_pattern("package.json", ".git"),
 					single_file_support = false,
 					settings = {
@@ -217,6 +258,44 @@ return {
 						},
 					},
 				},
+				vtsls = {
+					-- explicitly add default filetypes, so that we can extend
+					-- them in related extras
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"javascript.jsx",
+						"typescript",
+						"typescriptreact",
+						"typescript.tsx",
+					},
+					settings = {
+						complete_function_calls = true,
+						vtsls = {
+							enableMoveToFileCodeAction = true,
+							autoUseWorkspaceTsdk = true,
+							experimental = {
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+						},
+						typescript = {
+							updateImportsOnFileMove = { enabled = "always" },
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							inlayHints = {
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = false },
+							},
+						},
+					},
+				},
 				--
 
 				lua_ls = {
@@ -235,6 +314,13 @@ return {
 				},
 			}
 
+			LazyVim.extend(servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
+				{
+					name = "@astrojs/ts-plugin",
+					location = LazyVim.get_pkg_path("astro-language-server", "/node_modules/@astrojs/ts-plugin"),
+					enableForWorkspaceTypeScriptVersions = true,
+				},
+			})
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
 			--  other tools, you can run

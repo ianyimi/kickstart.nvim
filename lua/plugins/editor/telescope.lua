@@ -183,7 +183,6 @@ return {
 		vim.keymap.set("n", "<leader>cw", function()
 			extensions.git_worktree.create_git_worktree()
 		end, { desc = "[C]reate [W]orkspace" })
-		-- vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 		vim.keymap.set("n", "<leader>f.", project_oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 		-- vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 

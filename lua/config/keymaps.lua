@@ -46,6 +46,14 @@ keymap.set("n", "<S-h>", "<cmd>BufferPrev<CR>", { noremap = true, silent = true,
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { desc = "Downshift selected code" })
 keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { desc = "Upshift selected code" })
 
+-- lazygit
+keymap.set("n", "<leader>gg", function()
+	LazyVim.lazygit({ cwd = LazyVim.root.git() })
+end, { desc = "Lazygit (Root Dir)" })
+keymap.set("n", "<leader>gG", function()
+	LazyVim.lazygit()
+end, { desc = "Lazygit (cwd)" })
+
 -- delete to void register & paste
 keymap.set("x", "<leader>p", '"_dP', { desc = "[P]aste & Delete to void" })
 

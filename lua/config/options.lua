@@ -15,6 +15,7 @@ vim.opt.spelllang = { "en" }
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.laststatus = 3
+vim.opt.signcolumn = "yes"
 
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true

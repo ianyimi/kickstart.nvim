@@ -198,6 +198,7 @@ return {
 				astro = {
 					root_dir = require("lspconfig").util.root_pattern("package.json", ".git", "astro.config.*"),
 				},
+				bashls = {},
 				-- biome = {
 				--   root_dir = require('lspconfig').util.root_pattern('package.json', '.git'),
 				-- },

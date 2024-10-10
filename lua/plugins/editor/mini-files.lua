@@ -87,6 +87,16 @@ return {
 			return trimmedPath
 		end
 
+		local reopen_mini_files = function(original_win_id, path)
+			-- Switch back to the original window
+			vim.api.nvim_set_current_win(original_win_id)
+			-- Reopen mini.files in the original window with the given path
+			MiniFiles.open(path, true)
+			-- Move focus back to the new window (grug_far)
+			--    local key = nvim_replace_termcodes("<leader>l", true, false, true)
+			-- vim.api.nvim_feedkeys(key, "n", false)
+		end
+
 		local grep_in_folder = function()
 			-- get the current directory
 			-- local current_dir = vim.fs.dirname(MiniFiles.get_fs_entry().path)
@@ -106,6 +116,10 @@ return {
 				-- updating the prefills without clearing the search and other fields
 				grug_far.update_instance_prefills("explorer", prefills, false)
 			end
+
+			-- local win_id = vim.api.nvim_get_current_win()
+			-- local path = vim.api.nvim_buf_get_name(0)
+			-- reopen_mini_files(win_id, path)
 		end
 
 		local grep_in_selected_folder = function()
@@ -169,11 +183,11 @@ return {
       end,
     })
 
-		vim.api.nvim_create_autocmd("VimEnter", {
-			callback = function()
-        require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-			end,
-		})
+		-- vim.api.nvim_create_autocmd("VimEnter", {
+		-- 	callback = function()
+		--       require("mini.files").open(nil, false)
+		-- 	end,
+		-- })
 
     vim.api.nvim_create_autocmd("User", {
       pattern = "MiniFilesActionRename",

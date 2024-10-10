@@ -82,6 +82,53 @@ return {
       end
     end
 
+		local current_folder = function(path)
+			local trimmedPath = path:match("(.+)/[^/]*$")
+			return trimmedPath
+		end
+
+		local grep_in_folder = function()
+			-- get the current directory
+			-- local current_dir = vim.fs.dirname(MiniFiles.get_fs_entry().path)
+			local current_dir = current_folder(MiniFiles.get_fs_entry().path)
+			local prefills = { paths = current_dir }
+
+			local grug_far = require("grug-far")
+			-- instance check
+			if not grug_far.has_instance("explorer") then
+				grug_far.open({
+					instanceName = "explorer",
+					prefills = prefills,
+					staticTitle = "Find and Replace from Explorer",
+				})
+			else
+				grug_far.open_instance("explorer")
+				-- updating the prefills without clearing the search and other fields
+				grug_far.update_instance_prefills("explorer", prefills, false)
+			end
+		end
+
+		local grep_in_selected_folder = function()
+			-- get the current directory
+			-- local current_dir = vim.fs.dirname(MiniFiles.get_fs_entry().path)
+			local current_dir = MiniFiles.get_fs_entry().path
+			local prefills = { paths = current_dir }
+
+			local grug_far = require("grug-far")
+			-- instance check
+			if not grug_far.has_instance("explorer") then
+				grug_far.open({
+					instanceName = "explorer",
+					prefills = prefills,
+					staticTitle = "Find and Replace from Explorer",
+				})
+			else
+				grug_far.open_instance("explorer")
+				-- updating the prefills without clearing the search and other fields
+				grug_far.update_instance_prefills("explorer", prefills, false)
+			end
+		end
+
     vim.api.nvim_create_autocmd("User", {
       pattern = "MiniFilesBufferCreate",
       callback = function(args)
@@ -98,11 +145,25 @@ return {
           "n",
           opts.mappings and opts.mappings.change_cwd or "gc",
           files_set_cwd,
-          { buffer = args.data.buf_id, desc = "Set cwd" }
+          { buffer = buf_id, desc = "Set cwd" }
         )
 
-        map_split(buf_id, opts.mappings and opts.mappings.go_in_horizontal or "<C-w>s", "horizontal", false)
-        map_split(buf_id, opts.mappings and opts.mappings.go_in_vertical or "<C-w>v", "vertical", false)
+				vim.keymap.set(
+					"n",
+					opts.mappings and opts.mappings.change_cwd or "gs",
+					grep_in_folder,
+					{ buffer = buf_id, desc = "[G]rep in folder" }
+				)
+
+				vim.keymap.set(
+					"n",
+					opts.mappings and opts.mappings.change_cwd or "gS",
+					grep_in_selected_folder,
+					{ buffer = buf_id, desc = "[G]rep in selected folder" }
+				)
+
+        map_split(buf_id, opts.mappings and opts.mappings.go_in_horizontal or "<C-b>", "horizontal", false)
+        map_split(buf_id, opts.mappings and opts.mappings.go_in_vertical or "<C-v>", "vertical", false)
         map_split(buf_id, opts.mappings and opts.mappings.go_in_horizontal_plus or "<C-w>S", "horizontal", true)
         map_split(buf_id, opts.mappings and opts.mappings.go_in_vertical_plus or "<C-w>V", "vertical", true)
       end,

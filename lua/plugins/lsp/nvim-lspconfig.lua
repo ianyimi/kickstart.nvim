@@ -196,7 +196,7 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				astro = {
-					root_dir = require("lspconfig").util.root_pattern("package.json", ".git", "astro.config.*"),
+					-- root_dir = require("lspconfig").util.root_pattern("astro.config.*", "package.json", ".git"),
 				},
 				bashls = {},
 				-- biome = {
@@ -262,6 +262,7 @@ return {
 				vtsls = {
 					-- explicitly add default filetypes, so that we can extend
 					-- them in related extras
+					root_dir = require("lspconfig").util.root_pattern("package.json", ".git"),
 					filetypes = {
 						"javascript",
 						"javascriptreact",

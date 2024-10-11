@@ -182,10 +182,7 @@ return {
 			})
 			-- open oil at current buffer
 			vim.keymap.set("n", "<leader>e", function()
-				local oil = require("oil")
-				oil.open()
-				oil.select({ path = vim.fn.expand("%:p") })
-				-- require("oil").open(vim.fn.expand("%:p:h"))
+				require("oil").open()
 			end, { desc = "[E]xplore Files" })
 		end,
 	},

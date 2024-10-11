@@ -20,6 +20,10 @@ return {
 				print("Updated Directory: " .. new_path)
 			end
 		end)
-		return {}
+
+		return {
+			update_on_change = true,
+			clearjumps_on_change = true
+		}
 	end,
 }

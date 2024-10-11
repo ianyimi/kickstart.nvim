@@ -39,7 +39,6 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-
 				["<S-Tab>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then
 						cmp.select_prev_item()
@@ -49,7 +48,8 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-				["<C-e>"] = cmp.mapping.abort(),
+				["<CR>"] = cmp.mapping.confirm(),
+				["<Esc>"] = cmp.mapping.abort(),
 			}),
 			sources = cmp.config.sources({
 				{ name = "emoji" },

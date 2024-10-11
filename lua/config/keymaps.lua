@@ -14,7 +14,7 @@ keymap.set("v", "<leader>.", "<cmd>normal gcc<CR>", { noremap = true, desc = "[C
 
 -- select all
 keymap.set("n", "<C-a>", "gg<S-v><S-g>", { desc = "Select All" })
-keymap.set("n", "<C-y>", "gg<S-v><S-g>y", { desc = "[Y]ank All" })
+keymap.set("n", "<C-y>", "gg<S-v><S-g>y<C-o>", { desc = "[Y]ank All" })
 
 --  upshift line below
 keymap.set("n", "<S-j>", "mz<S-j>`z", { desc = "Upshift line below" })

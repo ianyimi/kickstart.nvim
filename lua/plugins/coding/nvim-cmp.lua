@@ -49,7 +49,10 @@ return {
 					end
 				end, { "i", "s" }),
 				["<CR>"] = cmp.mapping.confirm(),
-				["<Esc>"] = cmp.mapping.abort(),
+				["<Esc>"] = function()
+					cmp.mapping.abort()
+					vim.cmd("stopinsert")
+				end,
 			}),
 			sources = cmp.config.sources({
 				{ name = "emoji" },

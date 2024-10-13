@@ -230,6 +230,7 @@ return {
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
+				taplo = {},
 				ts_ls = {
 					enabled = false,
 					root_dir = require("lspconfig").util.root_pattern("package.json", ".git"),

@@ -3,9 +3,16 @@ return {
 	opts = function()
 		local worktree = require("git-worktree")
 		-- Function to normalize paths to use backslashes
-    local function normalize_path(path)
-      return path:gsub("/", "\\")
-    end
+		local function normalize_path(path)
+			local sep = package.config:sub(1, 1)
+			if sep == "\\" then
+				-- On Windows, replace '/' with '\'
+				return path:gsub("/", "\\")
+			else
+				-- On Unix-like systems (macOS, Linux), return the path as-is
+				return path
+			end
+		end
 		worktree.on_tree_change(function(op, metadata)
 			local oil_ok, oil = pcall(require, "oil")
 			local mini_files_ok, mini_files = pcall(require, "mini.files")
@@ -23,7 +30,7 @@ return {
 
 		return {
 			update_on_change = true,
-			clearjumps_on_change = true
+			clearjumps_on_change = true,
 		}
 	end,
 }

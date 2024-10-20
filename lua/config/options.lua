@@ -9,7 +9,6 @@ vim.g.bigfile_size = 1024 * 1024 * 1.5 -- 1.5 MB
 vim.g.markdown_recommended_style = 0
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
-vim.opt.message = 1000
 
 vim.opt.spelllang = { "en" }
 

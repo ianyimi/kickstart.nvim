@@ -197,6 +197,13 @@ return {
 			local servers = {
 				astro = {
 					-- root_dir = require("lspconfig").util.root_pattern("astro.config.*", "package.json", ".git"),
+					root_dir = require("lspconfig").util.root_pattern(
+						"package.json",
+						"tsconfig.json",
+						"jsconfig.json",
+						".git"
+					),
+					typescript = {},
 				},
 				bashls = {},
 				-- biome = {
@@ -260,6 +267,7 @@ return {
 						},
 					},
 				},
+				svelte = {},
 				vtsls = {
 					-- explicitly add default filetypes, so that we can extend
 					-- them in related extras
@@ -328,9 +336,9 @@ return {
 					-- lazy-load schemastore when needed
 					on_new_config = function(new_config)
 						new_config.settings.yaml.schemas = vim.tbl_deep_extend(
-						"force",
-						new_config.settings.yaml.schemas or {},
-						require("schemastore").yaml.schemas()
+							"force",
+							new_config.settings.yaml.schemas or {},
+							require("schemastore").yaml.schemas()
 						)
 					end,
 					settings = {

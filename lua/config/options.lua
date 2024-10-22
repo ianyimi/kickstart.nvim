@@ -47,3 +47,47 @@ vim.opt.termguicolors = true
 vim.opt.showmode = false
 
 vim.opt.undofile = true
+
+-- Function to get the name of the current Git branch
+local function get_git_branch()
+	local handle = io.popen('git rev-parse --abbrev-ref HEAD 2>nul')
+	local result = handle:read("*a")
+	handle:close()
+	if result == '' then
+		return nil
+	else
+		return result:gsub('%s+', '') -- Remove any whitespace
+	end
+end
+
+-- Function to get the current Git worktree's top-level directory
+local function get_git_worktree()
+	local handle = io.popen('git rev-parse --show-toplevel 2>nul')
+	local result = handle:read("*a")
+	handle:close()
+	if result == '' then
+		return nil
+	else
+		return result:gsub('%s+$', '') -- Remove trailing whitespace
+	end
+end
+
+-- Get the Git worktree path or branch name
+local git_worktree = get_git_worktree()
+local git_branch = get_git_branch()
+
+if git_worktree then
+	-- Sanitize the worktree path to create a unique filename
+	local worktree_name = git_worktree:gsub('[^%w%-_./]', '_'):gsub('[:\\]', '_')
+	local shada_filename = 'main-' .. worktree_name .. '.shada'
+	-- Set the shadafile option to use the worktree-specific Shada file
+	vim.opt.shadafile = vim.fn.stdpath('data') .. '/shada/' .. shada_filename
+elseif git_branch then
+	-- Use the branch name if worktree path is not available
+	local branch_name = git_branch:gsub('[^%w%-_./]', '_')
+	local shada_filename = 'main-' .. branch_name .. '.shada'
+	vim.opt.shadafile = vim.fn.stdpath('data') .. '/shada/' .. shada_filename
+else
+	-- Fallback to the default shadafile
+	vim.opt.shadafile = vim.fn.stdpath('data') .. '/shada/main.shada'
+end

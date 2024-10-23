@@ -7,6 +7,7 @@ keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 --  save
 keymap.set("n", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
 keymap.set("v", "<leader>w", "<cmd>w<cr><Esc>", { desc = "[W]rite file" })
+keymap.set("v", "<leader><S-w>", "<cmd>w<CR><Esc><cmd>bd<CR>", { desc = "[W]rite file, close buffer" })
 
 --  comment
 keymap.set("n", "<leader>.", "<cmd>normal gcc<CR>", { noremap = true, desc = "[C]omment line" })

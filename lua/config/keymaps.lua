@@ -40,6 +40,7 @@ keymap.set("n", "<a-l>", "<cmd>tabprev", { desc = "Split window below" })
 
 -- buffer controls
 keymap.set("n", "<S-x>", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
+keymap.set("n", "<C-S-x>", ":bd!<CR>", { noremap = true, silent = true, desc = "Close Buffer (Force)" })
 -- buffer navigation
 keymap.set("n", "<S-l>", "<cmd>BufferNext<CR>", { noremap = true, silent = true, desc = "Next Buffer" })
 keymap.set("n", "<S-h>", "<cmd>BufferPrev<CR>", { noremap = true, silent = true, desc = "Previous Buffer" })

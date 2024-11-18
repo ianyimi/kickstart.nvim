@@ -94,9 +94,7 @@ return {
 					end,
 				},
 				float = {
-					padding = 2,
-					max_width = 90,
-					max_height = 0,
+					max_width = 95,
 				},
 				win_options = {
 					wrap = true,
@@ -119,6 +117,7 @@ return {
 					["<C-s>"] = "actions.change_sort",
 					["<C-h>"] = "actions.toggle_hidden",
 					["<C-x>"] = "actions.toggle_trash",
+					["<C-p>"] = "actions.preview",
 					["<C-d>"] = {
 						desc = "Toggle file detail view",
 						callback = function()
@@ -130,7 +129,7 @@ return {
 							end
 						end,
 					},
-					["<C-p>"] = {
+					["<C-y>"] = {
 						desc = "[C]opy Directory path",
 						callback = function()
 							local current_dir = require("oil").get_current_dir()
@@ -182,7 +181,7 @@ return {
 			})
 			-- open oil at current buffer
 			vim.keymap.set("n", "<leader>e", function()
-				require("oil").open()
+				require("oil").toggle_float()
 			end, { desc = "[E]xplore Files" })
 		end,
 	},

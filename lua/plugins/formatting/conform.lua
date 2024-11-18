@@ -30,25 +30,25 @@ return {
 
 		-- Configure individual formatters
 		conform.formatters.prettier = {
-			args = {
-				"--stdin-filepath",
-				"$FILENAME",
-				"--tab-width",
-				"4",
-				"--use-tabs",
-				"false",
-			},
+			arrowParens = "always",
+			printWidth = 80,
+			singleQuote = false,
+			jsxSingleQuote = false,
+			semi = true,
+			trailingComma = "all",
+			tabWidth = 2,
+			plugins = { "prettier-plugin-tailwindcss" },
 		}
 		conform.formatters.shfmt = {
 			prepend_args = { "-i", "4" },
 		}
 
-		-- vim.keymap.set({ "n", "v" }, "<leader>mp", function()
-		-- 	conform.format({
-		-- 		lsp_fallback = true,
-		-- 		async = false,
-		-- 		timeout_ms = 1000,
-		-- 	})
-		-- end, { desc = "Format file or range (in visual mode)" })
+		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+			conform.format({
+				lsp_fallback = true,
+				async = false,
+				timeout_ms = 1000,
+			})
+		end, { desc = "Format file or selection (in visual mode)" })
 	end,
 }

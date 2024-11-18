@@ -11,6 +11,7 @@ return {
       end,
     },
     { "williamboman/mason-lspconfig.nvim" }, -- Optional
+		{ 'j-hui/fidget.nvim', opts = {} },
 
     -- Autocompletion
     { "hrsh7th/nvim-cmp" }, -- Required

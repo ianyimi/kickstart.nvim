@@ -1,378 +1,242 @@
 return {
-	-- LSP Zero Configuration
 	{
-		'VonHeikemen/lsp-zero.nvim',
-		branch = 'v4.x',
-		lazy = true,
-		config = false,
-	},
-	-- Mason for managing LSP servers and tools
-	{
-		'williamboman/mason.nvim',
-		lazy = false,
-		opts = {},
-	},
-	{
-		'WhoIsSethDaniel/mason-tool-installer.nvim',
-		config = function()
-			local ensure_installed = {
-				-- LSP servers
-				'astro-language-server',
-				'bash-language-server',
-				'css-lsp',
-				'clangd',
-				'eslint-lsp',
-				'gopls',
-				'html-lsp',
-				'tailwindcss-language-server',
-				'taplo',
-				'vtsls',
-				'svelte-language-server',
-				'lua-language-server',
-				'yaml-language-server',
-				-- Formatters
-				'stylua',
-				'prettierd',
-				-- 'fish_indent',
-				'shfmt',
-				-- 'gofmt',
-			}
-			require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+		"williamboman/mason.nvim",
+		opts = function(_, opts)
+			opts.ensure_installed = opts.ensure_installed or {}
+			table.insert(opts.ensure_installed, "js-debug-adapter")
 		end,
 	},
-	-- nvim-cmp for autocompletion
 	{
-		'hrsh7th/nvim-cmp',
-		dependencies = {
-			'hrsh7th/cmp-nvim-lsp',
-			'hrsh7th/cmp-buffer',
-			'hrsh7th/cmp-path',
-			'hrsh7th/cmp-cmdline',
-			'hrsh7th/cmp-emoji',
-			'saadparwaiz1/cmp_luasnip',
-			'L3MON4D3/LuaSnip',
-		},
-		config = function()
-			-- Set up nvim-cmp.
-			local luasnip = require('luasnip')
-			local cmp = require('cmp')
-
-			cmp.setup({
-				snippet = {
-					-- REQUIRED - you must specify a snippet engine
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
+		"neovim/nvim-lspconfig",
+		opts = {
+			-- make sure mason installs the server
+			servers = {
+				eslint = {
+					settings = {
+						-- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
+						workingDirectories = { mode = "auto" },
+						format = auto_format,
+					},
 				},
-				window = {
-					-- completion = cmp.config.window.bordered(),
-					-- documentation = cmp.config.window.bordered(),
+				--- @deprecated -- tsserver renamed to ts_ls but not yet released, so keep this for now
+				--- the proper approach is to check the nvim-lspconfig release version when it's released to determine the server name dynamically
+				tsserver = {
+					enabled = false,
 				},
-				mapping = cmp.mapping.preset.insert({
-					['<Tab>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item()
-						elseif luasnip.expand_or_jumpable() then
-							luasnip.expand_or_jump()
-						else
-							fallback()
-						end
-					end, { 'i', 's' }),
-					['<S-Tab>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						elseif luasnip.jumpable(-1) then
-							luasnip.jump(-1)
-						else
-							fallback()
-						end
-					end, { 'i', 's' }),
-					['<CR>'] = cmp.mapping.confirm({ select = false }),
-					['<Esc>'] = cmp.mapping(function(fallback)
-						cmp.mapping.abort()
-						vim.cmd('stopinsert')
-					end, { 'i', 's' }),
-				}),
-				sources = cmp.config.sources({
-					{ name = 'emoji' },
-					{ name = 'nvim_lsp' },
-					{ name = 'nvim_lsp_signature_help' },
-					{ name = 'luasnip' },
-				}, {
-					{ name = 'buffer' },
-				}),
-			})
-
-			-- Setup cmdline `/` and `?` with buffer source
-			cmp.setup.cmdline({ '/', '?' }, {
-				mapping = {
-					['<Tab>'] = cmp.mapping.confirm({ select = true }),
-					['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
-					['<Down>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+				ts_ls = {
+					enabled = false,
 				},
-				sources = {
-					{ name = 'buffer' },
-				},
-			})
-
-			-- Setup cmdline ':' with path and cmdline sources
-			cmp.setup.cmdline(':', {
-				mapping = {
-					['<Tab>'] = cmp.mapping.confirm({ select = true }),
-					['<Up>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
-					['<Down>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
-				},
-				sources = cmp.config.sources({
-					{ name = 'path' },
-				}, {
-					{ name = 'cmdline' },
-				}),
-			})
-		end,
-	},
-	-- LSP configurations
-	{
-		'neovim/nvim-lspconfig',
-		cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
-		event = { 'BufReadPre', 'BufNewFile' },
-		dependencies = {
-			{ 'hrsh7th/cmp-nvim-lsp' },
-			{ 'williamboman/mason.nvim' },
-			{ 'williamboman/mason-lspconfig.nvim' },
-			{ 'j-hui/fidget.nvim',                opts = {} },
-			{ 'b0o/SchemaStore.nvim',             lazy = true, version = false },
-		},
-		config = function()
-			local lsp = require('lsp-zero').preset({})
-
-			-- Set up nvim-cmp capabilities
-			local cmp = require('cmp')
-			local cmp_mappings = cmp.mapping.preset.insert({
-				['<Tab>'] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_next_item()
-					elseif require('luasnip').expand_or_jumpable() then
-						require('luasnip').expand_or_jump()
-					else
-						fallback()
-					end
-				end, { 'i', 's' }),
-				['<S-Tab>'] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_prev_item()
-					elseif require('luasnip').jumpable(-1) then
-						require('luasnip').jump(-1)
-					else
-						fallback()
-					end
-				end, { 'i', 's' }),
-				['<CR>'] = cmp.mapping.confirm({ select = false }),
-				['<Esc>'] = cmp.mapping(function(fallback)
-					cmp.mapping.abort()
-					vim.cmd('stopinsert')
-				end, { 'i', 's' }),
-			})
-
-			cmp.setup({
-				mapping = cmp_mappings,
-				sources = cmp.config.sources({
-					{ name = 'emoji' },
-					{ name = 'nvim_lsp' },
-					{ name = 'nvim_lsp_signature_help' },
-					{ name = 'luasnip' },
-				}, {
-					{ name = 'buffer' },
-				}),
-			})
-
-			-- Ensure LSP servers are installed using mason-lspconfig
-			require('mason-lspconfig').setup({
-				ensure_installed = {
-					'astro',
-					'bashls',
-					'cssls',
-					'clangd',
-					'eslint',
-					'gopls',
-					'html',
-					'tailwindcss',
-					'taplo',
-					'vtsls',
-					'svelte',
-					'lua_ls',
-					'yamlls',
-				},
-				handlers = {
-					lsp.default_setup,
-					-- You can specify custom handlers per server
-					['lua_ls'] = function()
-						lsp.nvim_workspace()
-					end,
-				},
-			})
-
-			lsp.on_attach(function(client, bufnr)
-				local map = function(keys, func, desc)
-					vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
-				end
-
-				-- Key mappings
-				map('gh', vim.lsp.buf.hover, 'Preview Hover')
-				map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-				map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-				map('<leader>cd', vim.diagnostic.open_float, '[S]how [D]iagnostic')
-				map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-				map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-				map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-				map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-				map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-				map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-				map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-				-- Highlight references
-				if client.supports_method('textDocument/documentHighlight') then
-					local highlight_augroup = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
-					vim.api.nvim_clear_autocmds({ group = highlight_augroup, buffer = bufnr })
-					vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-						group = highlight_augroup,
-						buffer = bufnr,
-						callback = vim.lsp.buf.document_highlight,
-					})
-					vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-						group = highlight_augroup,
-						buffer = bufnr,
-						callback = vim.lsp.buf.clear_references,
-					})
-				end
-
-				-- Format on save using lsp-zero's built-in formatting
-				if client.supports_method('textDocument/formatting') then
-					vim.api.nvim_create_autocmd('BufWritePre', {
-						group = vim.api.nvim_create_augroup('LspFormatOnSave', { clear = true }),
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format()
-						end,
-					})
-				end
-			end)
-
-			-- Configure individual LSP servers
-			lsp.configure('astro', {
-				root_dir = require('lspconfig').util.root_pattern(
-					'package.json',
-					'tsconfig.json',
-					'jsconfig.json',
-					'.git'
-				),
-			})
-
-			lsp.configure('tailwindcss', {
-				root_dir = require('lspconfig').util.root_pattern(
-					'package.json',
-					'.git',
-					'tailwind.config.*'
-				),
-				settings = {
-					tailwindCSS = {
-						experimental = {
-							classRegex = {
-								{ 'cva\\(([^)]*)\\)', '[\"\'`]([^\"\'`]*).*?[\"\'`]' },
-								{ 'cx\\(([^)]*)\\)',  "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+				vtsls = {
+					-- explicitly add default filetypes, so that we can extend
+					-- them in related extras
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"javascript.jsx",
+						"typescript",
+						"typescriptreact",
+						"typescript.tsx",
+					},
+					settings = {
+						complete_function_calls = true,
+						vtsls = {
+							enableMoveToFileCodeAction = true,
+							autoUseWorkspaceTsdk = true,
+							experimental = {
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+						},
+						typescript = {
+							updateImportsOnFileMove = { enabled = "always" },
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							inlayHints = {
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = false },
 							},
 						},
 					},
+					keys = {
+						-- Preview Hover
+						{
+							"gh",
+							vim.lsp.buf.hover,
+							desc = "Preview Hover",
+						},
+						-- Go to Definition
+						{
+							"gd",
+							require("telescope.builtin").lsp_definitions,
+							desc = "[G]oto [D]efinition",
+						},
+						-- Go to References
+						{
+							"gr",
+							require("telescope.builtin").lsp_references,
+							desc = "[G]oto [R]eferences",
+						},
+						-- Show Diagnostic
+						{
+							"<leader>cd",
+							vim.diagnostic.open_float,
+							desc = "[S]how [D]iagnostic",
+						},
+						-- Go to Implementation
+						{
+							"gI",
+							require("telescope.builtin").lsp_implementations,
+							desc = "[G]oto [I]mplementation",
+						},
+						-- Type Definition
+						{
+							"<leader>D",
+							require("telescope.builtin").lsp_type_definitions,
+							desc = "Type [D]efinition",
+						},
+						-- Document Symbols
+						{
+							"<leader>ds",
+							require("telescope.builtin").lsp_document_symbols,
+							desc = "[D]ocument [S]ymbols",
+						},
+						-- Workspace Symbols
+						{
+							"<leader>ws",
+							require("telescope.builtin").lsp_dynamic_workspace_symbols,
+							desc = "[W]orkspace [S]ymbols",
+						},
+						-- Rename
+						{
+							"<leader>rn",
+							vim.lsp.buf.rename,
+							desc = "[R]e[n]ame",
+						},
+						-- Code Action
+						{
+							"<leader>ca",
+							vim.lsp.buf.code_action,
+							desc = "[C]ode [A]ction",
+						},
+						-- Go to Declaration
+						{
+							"gD",
+							vim.lsp.buf.declaration,
+							desc = "[G]oto [D]eclaration",
+						},
+					}
 				},
-			})
+			},
+			setup = {
+				eslint = function()
+					if not auto_format then
+						return
+					end
 
-			lsp.configure('vtsls', {
-				root_dir = require('lspconfig').util.root_pattern('package.json', '.git'),
-				filetypes = {
-					'javascript',
-					'javascriptreact',
-					'javascript.jsx',
-					'typescript',
-					'typescriptreact',
-					'typescript.tsx',
-				},
-				settings = {
-					complete_function_calls = true,
-					vtsls = {
-						enableMoveToFileCodeAction = true,
-						autoUseWorkspaceTsdk = true,
-						experimental = {
-							completion = {
-								enableServerSideFuzzyMatch = true,
-							},
-						},
-					},
-					typescript = {
-						updateImportsOnFileMove = { enabled = 'always' },
-						suggest = {
-							completeFunctionCalls = true,
-						},
-						inlayHints = {
-							enumMemberValues = { enabled = true },
-							functionLikeReturnTypes = { enabled = true },
-							parameterNames = { enabled = 'literals' },
-							parameterTypes = { enabled = true },
-							propertyDeclarationTypes = { enabled = true },
-							variableTypes = { enabled = false },
-						},
-					},
-				},
-			})
+					local function get_client(buf)
+						return LazyVim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
+					end
 
-			lsp.configure('eslint', {
-				settings = {
-					workingDirectories = { mode = 'auto' },
-				},
-			})
+					local formatter = LazyVim.lsp.formatter({
+						name = "eslint: lsp",
+						primary = false,
+						priority = 200,
+						filter = "eslint",
+					})
 
-			lsp.configure('lua_ls', {
-				settings = {
-					Lua = {
-						completion = {
-							callSnippet = 'Replace',
-						},
-						-- Uncomment below to disable 'missing-fields' diagnostics
-						-- diagnostics = { disable = { 'missing-fields' } },
-					},
-				},
-			})
+					-- Use EslintFixAll on Neovim < 0.10.0
+					if not pcall(require, "vim.lsp._dynamic") then
+						formatter.name = "eslint: EslintFixAll"
+						formatter.sources = function(buf)
+							local client = get_client(buf)
+							return client and { "eslint" } or {}
+						end
+						formatter.format = function(buf)
+							local client = get_client(buf)
+							if client then
+								local diag = vim.diagnostic.get(buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+								if #diag > 0 then
+									vim.cmd("EslintFixAll")
+								end
+							end
+						end
+					end
 
-			lsp.configure('yamlls', {
-				capabilities = {
-					textDocument = {
-						foldingRange = {
-							dynamicRegistration = false,
-							lineFoldingOnly = true,
-						},
-					},
-				},
-				on_new_config = function(new_config)
-					new_config.settings.yaml.schemas = vim.tbl_deep_extend(
-						'force',
-						new_config.settings.yaml.schemas or {},
-						require('schemastore').yaml.schemas()
-					)
+					-- register the formatter with LazyVim
+					LazyVim.format.register(formatter)
 				end,
-				settings = {
-					redhat = { telemetry = { enabled = false } },
-					yaml = {
-						keyOrdering = false,
-						format = { enable = true },
-						validate = true,
-						schemaStore = {
-							enable = false,
-							url = '',
-						},
-					},
-				},
-			})
+				--- @deprecated -- tsserver renamed to ts_ls but not yet released, so keep this for now
+				--- the proper approach is to check the nvim-lspconfig release version when it's released to determine the server name dynamically
+				tsserver = function()
+					-- disable tsserver
+					return true
+				end,
+				ts_ls = function()
+					-- disable tsserver
+					return true
+				end,
+				vtsls = function(_, opts)
+					LazyVim.lsp.on_attach(function(client, buffer)
+						client.commands["_typescript.moveToFileRefactoring"] = function(command, ctx)
+							---@type string, string, lsp.Range
+							local action, uri, range = unpack(command.arguments)
 
-			-- Setup the LSP
-			lsp.setup()
-		end,
+							local function move(newf)
+								client.request("workspace/executeCommand", {
+									command = command.command,
+									arguments = { action, uri, range, newf },
+								})
+							end
+
+							local fname = vim.uri_to_fname(uri)
+							client.request("workspace/executeCommand", {
+								command = "typescript.tsserverRequest",
+								arguments = {
+									"getMoveToRefactoringFileSuggestions",
+									{
+										file = fname,
+										startLine = range.start.line + 1,
+										startOffset = range.start.character + 1,
+										endLine = range["end"].line + 1,
+										endOffset = range["end"].character + 1,
+									},
+								},
+							}, function(_, result)
+								---@type string[]
+								local files = result.body.files
+								table.insert(files, 1, "Enter new path...")
+								vim.ui.select(files, {
+									prompt = "Select move destination:",
+									format_item = function(f)
+										return vim.fn.fnamemodify(f, ":~:.")
+									end,
+								}, function(f)
+									if f and f:find("^Enter new path") then
+										vim.ui.input({
+											prompt = "Enter move destination:",
+											default = vim.fn.fnamemodify(fname, ":h") .. "/",
+											completion = "file",
+										}, function(newf)
+											return newf and move(newf)
+										end)
+									elseif f then
+										move(f)
+									end
+								end)
+							end)
+						end
+					end, "vtsls")
+					-- copy typescript settings to javascript
+					opts.settings.javascript =
+					vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
+				end,
+			},
+		},
 	},
 }
